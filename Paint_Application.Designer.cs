@@ -37,9 +37,15 @@
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.comboBox11 = new System.Windows.Forms.ComboBox();
             this.comboBox9 = new System.Windows.Forms.ComboBox();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.comboBox10 = new System.Windows.Forms.ComboBox();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -54,11 +60,17 @@
             this.comboBox8 = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
             this.comboBox7 = new System.Windows.Forms.ComboBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.colorDialog2 = new System.Windows.Forms.ColorDialog();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.groupBox7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.flowLayoutPanel3.SuspendLayout();
+            this.groupBox8.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -79,8 +91,9 @@
             "Arc"});
             this.Buttonbox.Location = new System.Drawing.Point(6, 25);
             this.Buttonbox.Name = "Buttonbox";
-            this.Buttonbox.Size = new System.Drawing.Size(143, 28);
+            this.Buttonbox.Size = new System.Drawing.Size(144, 28);
             this.Buttonbox.TabIndex = 0;
+            this.Buttonbox.SelectedIndexChanged += new System.EventHandler(this.Buttonbox_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -89,7 +102,7 @@
             this.label1.ForeColor = System.Drawing.Color.Black;
             this.label1.Location = new System.Drawing.Point(678, 15);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(132, 20);
+            this.label1.Size = new System.Drawing.Size(148, 20);
             this.label1.TabIndex = 1;
             this.label1.Text = "Shape Properties";
             // 
@@ -109,17 +122,19 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(6, 20);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(143, 28);
+            this.comboBox1.Size = new System.Drawing.Size(144, 28);
             this.comboBox1.TabIndex = 5;
-            this.comboBox1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBox1_DrawItem);
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.comboBox1.Click += new System.EventHandler(this.comboBox1_Click);
             // 
             // label6
             // 
             this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.Color.Black;
             this.label6.Location = new System.Drawing.Point(472, 15);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(127, 20);
+            this.label6.Size = new System.Drawing.Size(143, 20);
             this.label6.TabIndex = 8;
             this.label6.Text = "Brush Properties";
             // 
@@ -127,7 +142,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.ForeColor = System.Drawing.Color.Black;
-            this.label7.Location = new System.Drawing.Point(472, 118);
+            this.label7.Location = new System.Drawing.Point(471, 195);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(44, 20);
             this.label7.TabIndex = 9;
@@ -168,6 +183,10 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.Color.CadetBlue;
+            this.splitContainer1.Panel1.Controls.Add(this.numericUpDown1);
+            this.splitContainer1.Panel1.Controls.Add(this.button2);
+            this.splitContainer1.Panel1.Controls.Add(this.button1);
+            this.splitContainer1.Panel1.Controls.Add(this.comboBox11);
             this.splitContainer1.Panel1.Controls.Add(this.comboBox9);
             this.splitContainer1.Panel1.Controls.Add(this.flowLayoutPanel3);
             this.splitContainer1.Panel1.Controls.Add(this.flowLayoutPanel1);
@@ -183,48 +202,113 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.Lavender;
+            this.splitContainer1.Panel2.Controls.Add(this.panel1);
             this.splitContainer1.Size = new System.Drawing.Size(1452, 948);
-            this.splitContainer1.SplitterDistance = 209;
+            this.splitContainer1.SplitterDistance = 452;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 1;
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(490, 131);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 26);
+            this.numericUpDown1.TabIndex = 36;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(546, 78);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(50, 35);
+            this.button2.TabIndex = 35;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(490, 78);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(50, 37);
+            this.button1.TabIndex = 34;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // comboBox11
+            // 
+            this.comboBox11.FormattingEnabled = true;
+            this.comboBox11.Items.AddRange(new object[] {
+            "Solid",
+            "Gradient",
+            "Hatch"});
+            this.comboBox11.Location = new System.Drawing.Point(490, 38);
+            this.comboBox11.Name = "comboBox11";
+            this.comboBox11.Size = new System.Drawing.Size(156, 28);
+            this.comboBox11.TabIndex = 33;
+            this.comboBox11.SelectedIndexChanged += new System.EventHandler(this.comboBox11_SelectedIndexChanged);
             // 
             // comboBox9
             // 
             this.comboBox9.FormattingEnabled = true;
-            this.comboBox9.Location = new System.Drawing.Point(695, 38);
             this.comboBox9.Items.AddRange(new object[] {
             "Shape",
-            "Stroke Color"});
+            "Stroke Color",
+            "Filled Color"});
+            this.comboBox9.Location = new System.Drawing.Point(694, 38);
             this.comboBox9.Name = "comboBox9";
             this.comboBox9.Size = new System.Drawing.Size(136, 28);
             this.comboBox9.TabIndex = 32;
             this.comboBox9.SelectedIndexChanged += new System.EventHandler(this.comboBox9_SelectedIndexChanged);
             // 
+            // flowLayoutPanel3
+            // 
+            this.flowLayoutPanel3.Controls.Add(this.groupBox8);
+            this.flowLayoutPanel3.Controls.Add(this.groupBox7);
+            this.flowLayoutPanel3.Controls.Add(this.groupBox6);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(682, 74);
+            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(165, 286);
+            this.flowLayoutPanel3.TabIndex = 29;
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.comboBox10);
+            this.groupBox8.Location = new System.Drawing.Point(3, 3);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(154, 75);
+            this.groupBox8.TabIndex = 33;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Filled Color";
+            // 
+            // comboBox10
+            // 
+            this.comboBox10.FormattingEnabled = true;
+            this.comboBox10.Location = new System.Drawing.Point(6, 26);
+            this.comboBox10.Name = "comboBox10";
+            this.comboBox10.Size = new System.Drawing.Size(144, 28);
+            this.comboBox10.TabIndex = 0;
+            this.comboBox10.SelectedIndexChanged += new System.EventHandler(this.comboBox10_SelectedIndexChanged);
+            this.comboBox10.Click += new System.EventHandler(this.comboBox10_Click);
+            // 
             // groupBox7
             // 
+            this.groupBox7.AutoSize = true;
             this.groupBox7.Controls.Add(this.comboBox1);
-            this.groupBox7.Location = new System.Drawing.Point(3, 89);
+            this.groupBox7.Location = new System.Drawing.Point(3, 84);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(155, 80);
+            this.groupBox7.Size = new System.Drawing.Size(156, 73);
             this.groupBox7.TabIndex = 31;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Stroke Color";
             // 
-            // flowLayoutPanel3
-            // 
-            this.flowLayoutPanel3.Controls.Add(this.groupBox6);
-            this.flowLayoutPanel3.Controls.Add(this.groupBox7);
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(682, 74);
-            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(168, 95);
-            this.flowLayoutPanel3.TabIndex = 29;
-            // 
             // groupBox6
             // 
+            this.groupBox6.AutoSize = true;
             this.groupBox6.Controls.Add(this.Buttonbox);
-            this.groupBox6.Location = new System.Drawing.Point(3, 3);
+            this.groupBox6.Location = new System.Drawing.Point(3, 163);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(155, 80);
+            this.groupBox6.Size = new System.Drawing.Size(156, 78);
             this.groupBox6.TabIndex = 30;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Shape";
@@ -384,6 +468,18 @@
             this.comboBox7.TabIndex = 23;
             this.comboBox7.SelectedIndexChanged += new System.EventHandler(this.comboBox7_SelectedIndexChanged);
             // 
+            // panel1
+            // 
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1452, 491);
+            this.panel1.TabIndex = 0;
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
+            this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
+            this.panel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseUp);
+            // 
             // Paint_Application
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -396,10 +492,14 @@
             this.Load += new System.EventHandler(this.Paint_Application_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
+            this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.groupBox7.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.flowLayoutPanel3.ResumeLayout(false);
+            this.flowLayoutPanel3.PerformLayout();
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox7.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
@@ -442,6 +542,15 @@
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.ComboBox comboBox9;
+        private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.ComboBox comboBox10;
+        private System.Windows.Forms.ComboBox comboBox11;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ColorDialog colorDialog2;
+        private System.Windows.Forms.Panel panel1;
     }
 }
 

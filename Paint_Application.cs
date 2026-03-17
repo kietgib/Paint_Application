@@ -3,16 +3,31 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Midterm
 {
+
     public partial class Paint_Application : Form
     {
+        List<Shape> shapes = new List<Shape>();
+
+        Color strokeColor = Color.Black;
+        Color fillColor = Color.Transparent;
+
+        Point startPoint;
+        Point endPoint;
+
+        bool isDrawing = false;
+
+        string selectedShape = "Rectangle";
+        Shape currentShape = null;
         public Paint_Application()
         {
             InitializeComponent();
@@ -31,11 +46,15 @@ namespace Midterm
             groupBox6.Visible = false;
             groupBox7.Visible = false;
 
+            
+
         }
         Pen myPen = new Pen(Color.Black, 3f);
 
         private void Paint_Application_Load(object sender, EventArgs e)
         {
+
+
             // Full màn hình
             this.WindowState = FormWindowState.Maximized;
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -43,6 +62,8 @@ namespace Midterm
             // SplitContainer setup
             splitContainer1.Dock = DockStyle.Fill;
             splitContainer1.Orientation = Orientation.Horizontal;
+            panel1.Dock = DockStyle.Fill;
+
 
             // GIỮ panel trái cố định không resize khi form thay đổi
             splitContainer1.FixedPanel = FixedPanel.Panel1;
@@ -65,10 +86,6 @@ namespace Midterm
                 comboBox2.Items.Add(w);
             comboBox2.SelectedIndex = 0;
 
-
-            comboBox1.DrawMode = DrawMode.OwnerDrawFixed;
-            comboBox1.Items.Clear();
-
             comboBox5.DrawMode = DrawMode.OwnerDrawFixed;
             comboBox5.Items.Clear();
 
@@ -87,41 +104,21 @@ namespace Midterm
 
             foreach (var c in colors)
             {
-                comboBox1.Items.Add(c.Name);
                 comboBox5.Items.Add(c.Name);
                 comboBox4.Items.Add(c.Name);
                 comboBox6.Items.Add(c.Name);
             }
+
+
         }
 
+        private Color currentStrokeColor = Color.Black;
+        private Color currentFillColor = Color.Black;
         private void Paint_Application_Shown(object sender, EventArgs e)
         {
             // Set lại SplitterDistance sau khi form đã rendered
             splitContainer1.SplitterDistance = 250;
         }
-
-        private void comboBox1_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            if (e.Index < 0) return;
-
-            string colorName = comboBox1.Items[e.Index].ToString();
-            Color col = Color.FromName(colorName);
-
-            e.DrawBackground();
-
-            Rectangle colorRect = new Rectangle(e.Bounds.X + 2, e.Bounds.Y + 2, 20, e.Bounds.Height - 4);
-            using (SolidBrush b = new SolidBrush(col))
-            {
-                e.Graphics.FillRectangle(b, colorRect);
-                e.Graphics.DrawRectangle(Pens.Black, colorRect);
-            }
-
-            e.Graphics.DrawString(colorName, comboBox1.Font, Brushes.Black,
-                e.Bounds.X + 26, e.Bounds.Y + 2);
-
-            e.DrawFocusRectangle();
-        }
-
         private void comboBox5_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (e.Index < 0) return;
@@ -143,7 +140,6 @@ namespace Midterm
 
             e.DrawFocusRectangle();
         }
-
         private void comboBox4_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (e.Index < 0) return;
@@ -165,7 +161,6 @@ namespace Midterm
 
             e.DrawFocusRectangle();
         }
-
         private void comboBox6_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (e.Index < 0) return;
@@ -187,12 +182,10 @@ namespace Midterm
 
             e.DrawFocusRectangle();
         }
-
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
             splitContainer1.Invalidate();
         }
-
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
             Pen myPen = new Pen(Color.Black, 3f);
@@ -210,7 +203,6 @@ namespace Midterm
 
             splitContainer1.Invalidate();
         }
-
         private void comboBox5_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBox5.SelectedIndex < 0) return;
@@ -227,7 +219,6 @@ namespace Midterm
             // Nếu muốn luôn cập nhật giao diện ngay
             splitContainer1.Panel1.Invalidate();
         }
-
         private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBox4.SelectedIndex < 0) return;
@@ -244,7 +235,6 @@ namespace Midterm
             // Nếu muốn luôn cập nhật giao diện ngay
             splitContainer1.Panel2.Invalidate();
         }
-
         private void comboBox6_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBox6.SelectedIndex < 0) return;
@@ -277,7 +267,6 @@ namespace Midterm
 
 
         }
-
         private void comboBox7_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Nếu chưa chọn gì
@@ -311,7 +300,6 @@ namespace Midterm
             // FlowLayoutPanel will auto adjust layout
             flowLayoutPanel2.PerformLayout();
         }
-
         private void comboBox8_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -343,7 +331,6 @@ namespace Midterm
             flowLayoutPanel1.PerformLayout();
 
         }
-            
         private void comboBox9_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Nếu chưa chọn gì
@@ -353,10 +340,12 @@ namespace Midterm
                 return;
             }
 
-            // Có chọn thì hiện FlowLayoutPanel
             flowLayoutPanel3.Visible = true;
+
+            // tắt cả nhóm trước khi bật lại
             groupBox6.Visible = false;
             groupBox7.Visible = false;
+            groupBox8.Visible = false;
 
             string selected = comboBox9.SelectedItem?.ToString();
 
@@ -365,13 +354,191 @@ namespace Midterm
                 case "Shape":
                     groupBox6.Visible = true;
                     break;
-                case "Stroke Color ":
+                case "Stroke Color":
                     groupBox7.Visible = true;
+                    break;
+                case "Filled Color":
+                    groupBox8.Visible = true;
+                    break;
+
+            }
+            flowLayoutPanel3.PerformLayout();
+        }
+        private void comboBox1_Click(object sender, EventArgs e)
+        {
+            // Mở hộp lựa chọn màu
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                Color selectedColor = colorDialog1.Color;
+
+                // Xóa item cũ nếu chỉ muốn 1 màu
+                comboBox1.Items.Clear();
+
+                // Thêm màu vừa chọn vào comboBox1 (hiển thị tên màu)
+                comboBox1.Items.Add(selectedColor.Name);
+
+                // Set selected index để show màu
+                comboBox1.SelectedIndex = 0;
+
+                // (tùy chọn) đổi màu nền hoặc text cho comboBox1 để dễ nhìn
+                comboBox1.BackColor = selectedColor;
+                comboBox1.ForeColor = Color.FromArgb(255 - selectedColor.R, 255 - selectedColor.G, 255 - selectedColor.B);
+                // forecolor đối nghịch để dễ đọc nếu cần
+
+            }
+        }
+        private void comboBox10_Click(object sender, EventArgs e)
+        {
+
+            // Mở hộp lựa chọn màu
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                Color selectedColor = colorDialog1.Color;
+
+                // Xóa item cũ nếu chỉ muốn 1 màu
+                comboBox10.Items.Clear();
+
+                // Thêm màu vừa chọn vào comboBox1 (hiển thị tên màu)
+                comboBox10.Items.Add(selectedColor.Name);
+
+                // Set selected index để show màu
+                comboBox10.SelectedIndex = 0;
+
+                // (tùy chọn) đổi màu nền hoặc text cho comboBox1 để dễ nhìn
+                comboBox10.BackColor = selectedColor;
+                comboBox10.ForeColor = Color.FromArgb(255 - selectedColor.R, 255 - selectedColor.G, 255 - selectedColor.B);
+                // forecolor đối nghịch để dễ đọc nếu cần
+            }
+        }
+
+
+        private Color color1 = Color.Black;
+        private Color color2 = Color.White;
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                currentStrokeColor = colorDialog1.Color;
+                comboBox1.BackColor = currentStrokeColor;
+                comboBox1.ForeColor = Color.FromArgb(255 - currentStrokeColor.R,
+                                                      255 - currentStrokeColor.G,
+                                                      255 - currentStrokeColor.B);
+            }
+        }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+                color2 = colorDialog1.Color;
+                splitContainer1.Panel2.Invalidate(); // redraw để áp dụng màu mới
+        }
+
+        private Brush CreateBrush(Rectangle area)
+        {
+            string type = comboBox11.SelectedItem?.ToString();
+
+            switch (type)
+            {
+                case "Solid":
+                    return new SolidBrush(color1);
+
+                case "Gradient":
+                    // gradient ngang (điều chỉnh angle bằng numAngle.Value nếu muốn)
+                    return new System.Drawing.Drawing2D.LinearGradientBrush(
+                        area, color1, color2, (float)numericUpDown1.Value);
+
+                case "Hatch":
+                    // dùng hatch pattern
+                    return new System.Drawing.Drawing2D.HatchBrush(
+                        System.Drawing.Drawing2D.HatchStyle.DiagonalCross,
+                        color1,
+                        color2);
+
+                default:
+                    return new SolidBrush(color1);
+            }
+        }
+
+
+        private void comboBox11_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            splitContainer1.Panel2.Invalidate(); // redraw
+        }
+
+        private void comboBox10_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            fillColor = Color.FromName(comboBox10.SelectedItem.ToString());
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            strokeColor = Color.FromName(comboBox1.SelectedItem.ToString());
+        }
+
+        private void Buttonbox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            selectedShape = Buttonbox.SelectedItem.ToString();
+        }
+
+        private void panel1_MouseDown(object sender, MouseEventArgs e)
+        {
+            isDrawing = true;
+            startPoint = e.Location;
+        }
+
+        private void panel1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!isDrawing) return;
+
+            Point endPoint = e.Location;
+
+            switch (selectedShape)
+            {
+                case "Line":
+                    currentShape = new LineShape(startPoint, endPoint, strokeColor);
+                    break;
+
+                case "Rectangle":
+                    currentShape = new RectangleShape(startPoint, endPoint, strokeColor, fillColor);
+                    break;
+
+                case "Circle":
+                    currentShape = new CircleShape(startPoint, endPoint, strokeColor, fillColor);
+                    break;
+
+                case "Arc":
+                    currentShape = new ArcShape(startPoint, endPoint, strokeColor);
                     break;
             }
 
-            // FlowLayoutPanel will auto adjust layout
-            flowLayoutPanel3.PerformLayout();
+            panel1.Invalidate();
+        }
+
+        private void panel1_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!isDrawing) return;
+
+            isDrawing = false;
+
+            if (currentShape != null)
+            {
+                shapes.Add(currentShape);
+                currentShape = null;
+            }
+
+            panel1.Invalidate();
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+            foreach (Shape s in shapes)
+            {
+                s.Draw(e.Graphics);
+            }
+
+            if (currentShape != null)
+            {
+                currentShape.Draw(e.Graphics);
+            }
         }
     }
 }
